@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Tis But A Scratch</title>
+  <link href="static/style.css" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+</head>
+
+<body>
+  <header>Tis But A Scratch</header>
+  <div class = "gameContainer">
+    <div class = "playerContainer" id = "playerOneContainer">
+      <img class = "player" src = "{{ url_for('static', filename = 'blackKnight1.png') }}"/>
+    </div>
+    <div class = "playerContainer" id = "playerTwoContainer">
+      <img class = "player" src = "{{ url_for('static', filename = 'whiteKnight1.png') }}"/>
+    </div>
+  </div>
+</body>
+</html>

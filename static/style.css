@@ -1,0 +1,15 @@
+*{
+  font-family: Montserrat;
+}
+header{
+  text-align: center;
+  font-size: 56px;
+  font-weight: 900;
+  text-shadow: 2px 2px #545454;
+  margin: 50px 0;
+}
+.gameContainer{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
