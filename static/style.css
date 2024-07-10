@@ -13,3 +13,24 @@ header{
   justify-content: space-around;
   flex-wrap: wrap;
 }
+.wordSpace{
+  font-size: 56px;
+  text-align: center;
+}
+input{
+  font-size: 36px;
+  border-radius: 18px;
+  background: none;
+  border: 2px solid black;
+  text-align: center;
+}
+#submit{
+  margin: 20px;
+  padding: 10px;
+  transition: 0.35s;
+}
+#submit:hover{
+  margin: 30px;
+  font-size: 42px;
+  padding: 15px;
+}
