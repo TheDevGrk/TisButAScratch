@@ -49,26 +49,28 @@ def index():
         values[7] = "Player One Forfeited Their Turn!"
       elif guess in values[1]:
         values[6] -= 1
-        newSpaces = ""
+        newSpaces = ["", "", "", "" , ""]
         for i in range(len(values[1])):
-          if values[1][i] == guess:
-              newSpaces += guess + " "
-              print("i", i, values[1][i], values[3][2*i])
-              if i != 4:
-                print("check")
-                for n in range(i+1, 5-i):
-                  print("n", n, values[1][n], values[3][2*n])
-                  if len(values[3]) > 2 * n: 
-                    newSpaces += values[3][2 * n] + " "
-                  else:
-                    newSpaces += "_ "
+          if values[1][i] == guess and values[3][i] != guess:
+              newSpaces[i] = guess
+              print("i", i, values[1][i], values[3][2*i], len(values[3]), values[3], "|")
+              loopList = [0, 1, 2 ,3, 4]
+              loopList.remove(i)
+              for n in loopList:
+                print("n", n, values[1][n], values[3][2*n], len(values[3]), values[3], "|")
+                if len(values[3]) > 2 * n: 
+                  newSpaces[n] = values[3][2 * n]
+                else:
+                  newSpaces[n] = values[3][2 * n -1]
               break
-          else:
-              if len(values[3]) > 2 * i: 
-                newSpaces += values[3][2 * i] + " "
-              else:
-                newSpaces += "_ "
-        values[3] = newSpaces.strip()
+          # else:
+          #     print("Test")
+          #     if len(values[3]) > 2 * i: 
+          #       newSpaces += values[3][2 * i] + " "
+          #     else:
+          #       newSpaces += "_ "
+        print("|" + str(newSpaces).replace("[", "").replace("]", "").replace(",", "").replace("'", "").strip() + "|")
+        values[3] = str(newSpaces).replace("[", "").replace("]", "").replace(",", "").replace("'", "").strip()
       values[0] = 2
     elif values[0] == 2:
       guess = request.form['guess'].upper()
@@ -76,26 +78,27 @@ def index():
         values[7] = "Player Two Forfeited Their Turn!"
       elif guess in values[2]:
         values[5] -= 1
-        newSpaces = ""
+        newSpaces = ["", "", "", "" , ""]
         for i in range(len(values[2])):
-          if values[2][i] == guess:
-              newSpaces += guess + " "
-              print("i", i, values[2][i], values[4][2*i])
-              if i != 4:
-                print("check")
-                for n in range(i+1, 5-i):
-                  print("n", n, values[2][n], values[4][2*n])
-                  if len(values[4]) > 2 * n:
-                    newSpaces += values[4][2 * n] + " "
-                  else:
-                    newSpaces += "_ "
+          if values[2][i] == guess and values[4][i] != guess:
+              newSpaces[i] = guess
+              print("i", i, values[2][i], values[4][2*i], len(values[4]), values[4], "|")
+              loopList = [0, 1, 2 ,3, 4]
+              loopList.remove(i)
+              for n in loopList:
+                print("n", n, values[2][n], values[4][2*n], len(values[4]), values[4], "|")
+                if len(values[4]) > 2 * n:
+                  newSpaces[n] = values[4][2 * n]
+                else:
+                  newSpaces[n] += values[4][2 * n - 1]
               break
-          else:
-              if len(values[4]) > 2 * i:
-                newSpaces += values[4][2 * i] + " "
-              else:
-                newSpaces += "_ "
-        values[4] = newSpaces.strip()
+          # else:
+          #     print("test")
+          #     if len(values[4]) > 2 * i:
+          #       newSpaces += values[4][2 * i] + " "
+          #     else:
+          #       newSpaces += "_ "
+        values[4] = str(newSpaces).replace("[", "").replace("]", "").replace(",", "").replace("'", "").strip()
       values[0] = 1
 
     cursor.execute("UPDATE game SET turn = ?, spaces1 = ?, spaces2 = ?, health1 = ?, health2 = ?", (values[0], values[3], values[4], values[5], values[6]))
