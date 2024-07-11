@@ -13,13 +13,13 @@
   <header>Tis But A Scratch</header>
   <div class = "gameContainer">
     <div class = "playerContainer" id = "playerOneContainer">
-      <img class = "player" src = "{{ url_for('static', filename = values[3]) }}"/>
-      <p class = "wordSpace">{{ values[1] }}</p>
+      <img class = "player" src = "{{ url_for('static', filename = values[5]) }}"/>
+      <p class = "wordSpace">{{ values[3] }}</p>
     </div>
     <div id = "gameInfo" class = "playerContainer"> 
       <form method = "POST">
         <center>
-        <h1 class = "popup">{{ values[5] }}</h1> 
+        <h1 class = "popup">{{ values[7] }}</h1> 
         <input name = "guess" type = "text" placeholder = "{{ values[0] }}"/>
         <br/>
         <input id = "submit" type = "submit" value = "Submit"/>
@@ -27,8 +27,8 @@
       </form>
     </div>
     <div class = "playerContainer" id = "playerTwoContainer">
-      <img class = "player" src = "{{ url_for('static', filename = values[4]) }}"/>
-      <p class = "wordSpace">{{ values[2] }}</p>
+      <img class = "player" src = "{{ url_for('static', filename = values[6]) }}"/>
+      <p class = "wordSpace">{{ values[4] }}</p>
     </div>
   </div>
 </body>
