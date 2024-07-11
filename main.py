@@ -53,18 +53,21 @@ def index():
         for i in range(len(values[1])):
           if values[1][i] == guess:
               newSpaces += guess + " "
+              if i != 4:
+                for n in range(4-i):
+                  if len(values[3]) > 2 * i: 
+                    newSpaces += values[3][2 * i] + " "
+                  else:
+                    newSpaces += "_ "
+              break
           else:
               if len(values[3]) > 2 * i: 
                 newSpaces += values[3][2 * i] + " "
               else:
                 newSpaces += "_ "
         values[3] = newSpaces.strip()
-        print(0)
-      print(0.1)
       values[0] = 2
-      print(0.2)
     elif values[0] == 2:
-      print(0.3)
       guess = request.form['guess'].upper()
       if guess not in alphabet:
         values[7] = "Player Two Forfeited Their Turn!"
@@ -74,21 +77,26 @@ def index():
         for i in range(len(values[2])):
           if values[2][i] == guess:
               newSpaces += guess + " "
+              if i != 4:
+                for n in range(4-i):
+                  if len(values[4]) > 2 * i:
+                    newSpaces += values[4][2 * i] + " "
+                  else:
+                    newSpaces += "_ "
+              break
           else:
               if len(values[4]) > 2 * i:
                 newSpaces += values[4][2 * i] + " "
               else:
                 newSpaces += "_ "
         values[4] = newSpaces.strip()
-      print(0.35)
       values[0] = 1
-      print(0.4)
 
-    print(1)
     cursor.execute("UPDATE game SET turn = ?, spaces1 = ?, spaces2 = ?, health1 = ?, health2 = ?", (values[0], values[3], values[4], values[5], values[6]))
     db.commit()
-    print(2)
 
+    values[5] = f"whiteKnight{values[5]}.png"
+    values[6] = f"blackKnight{values[6]}.png"
     values[3] = values[3].replace("_", "_ ")
     values[4] = values[4].replace("_", "_ ")
 
