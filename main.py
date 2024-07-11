@@ -24,7 +24,7 @@ def index():
       word2 = r.word(word_min_length = 5, word_max_length = 5).upper()
       if word2 == word1:
         word2 = r.word(word_min_length = 5, word_max_length = 5)
-      cursor.execute("UPDATE game SET turn = ?, word1 = ?, word2 = ?, spaces1 = ?, spaces2 = ?, health1 = ?, health2 = ?", (1, word1, word2, "_____", "_____", 5, 5))
+      cursor.execute("UPDATE game SET turn = ?, word1 = ?, word2 = ?, spaces1 = ?, spaces2 = ?, health1 = ?, health2 = ?", (1, word1, word2, "_ _ _ _ _", "_ _ _ _ _", 5, 5))
       db.commit()
       values = ["Player One", "_ _ _ _ _", "_ _ _ _ _", "whiteKnight5.png", "blackKnight5.png"]
     else:
@@ -32,7 +32,7 @@ def index():
       word2 = r.word(word_min_length = 5, word_max_length = 5).upper()
       if word2 == word1:
         word2 = r.word(word_min_length = 5, word_max_length = 5)
-      cursor.execute("UPDATE game SET turn = ?, word1 = ?, word2 = ?, spaces1 = ?, spaces2 = ?, health1 = ?, health2 = ?", (1, word1, word2, "_____", "_____", 5, 5))
+      cursor.execute("UPDATE game SET turn = ?, word1 = ?, word2 = ?, spaces1 = ?, spaces2 = ?, health1 = ?, health2 = ?", (1, word1, word2, "_ _ _ _ _", "_ _ _ _ _", 5, 5))
       db.commit()
       values = ["Player One", word1, word2, "_ _ _ _ _", "_ _ _ _ _", "whiteKnight5.png", "blackKnight5.png"]
   elif request.method == "POST":
@@ -53,10 +53,13 @@ def index():
         for i in range(len(values[1])):
           if values[1][i] == guess:
               newSpaces += guess + " "
+              print("i", i, values[1][i], values[3][2*i])
               if i != 4:
-                for n in range(4-i):
-                  if len(values[3]) > 2 * i: 
-                    newSpaces += values[3][2 * i] + " "
+                print("check")
+                for n in range(i+1, 5-i):
+                  print("n", n, values[1][n], values[3][2*n])
+                  if len(values[3]) > 2 * n: 
+                    newSpaces += values[3][2 * n] + " "
                   else:
                     newSpaces += "_ "
               break
@@ -77,10 +80,13 @@ def index():
         for i in range(len(values[2])):
           if values[2][i] == guess:
               newSpaces += guess + " "
+              print("i", i, values[2][i], values[4][2*i])
               if i != 4:
-                for n in range(4-i):
-                  if len(values[4]) > 2 * i:
-                    newSpaces += values[4][2 * i] + " "
+                print("check")
+                for n in range(i+1, 5-i):
+                  print("n", n, values[2][n], values[4][2*n])
+                  if len(values[4]) > 2 * n:
+                    newSpaces += values[4][2 * n] + " "
                   else:
                     newSpaces += "_ "
               break
