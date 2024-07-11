@@ -46,11 +46,19 @@ def index():
     if values[0] == 1:
       guess = request.form['guess'].upper()
       if guess not in alphabet:
-        values[7] = "Player One Forfitted Their Turn!"
+        values[7] = "Player One Forfeited Their Turn!"
       elif guess in values[1]:
         values[6] -= 1
-        index = values[1].index(guess)
-        values[3] = values[3][:index] + guess + " " + values[3][index + 1:]
+        newSpaces = ""
+        for i in range(len(values[1])):
+          if values[1][i] == guess:
+              newSpaces += guess + " "
+          else:
+              if len(values[3]) > 2 * i: 
+                newSpaces += values[3][2 * i] + " "
+              else:
+                newSpaces += "_ "
+        values[3] = newSpaces.strip()
         print(0)
       print(0.1)
       values[0] = 2
@@ -59,11 +67,19 @@ def index():
       print(0.3)
       guess = request.form['guess'].upper()
       if guess not in alphabet:
-        values[7] = "Player Two Forfitted Their Turn!"
+        values[7] = "Player Two Forfeited Their Turn!"
       elif guess in values[2]:
         values[5] -= 1
-        index = values[2].index(guess)
-        values[4] = values[4][:index] + guess + " " + values[4][index + 1:]
+        newSpaces = ""
+        for i in range(len(values[2])):
+          if values[2][i] == guess:
+              newSpaces += guess + " "
+          else:
+              if len(values[4]) > 2 * i:
+                newSpaces += values[4][2 * i] + " "
+              else:
+                newSpaces += "_ "
+        values[4] = newSpaces.strip()
       print(0.35)
       values[0] = 1
       print(0.4)
@@ -76,6 +92,8 @@ def index():
     values[3] = values[3].replace("_", "_ ")
     values[4] = values[4].replace("_", "_ ")
 
+  cursor.close()
+  db.close()
   return render_template("index.html", values = values)
 
 if __name__ == '__main__':
