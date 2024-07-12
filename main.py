@@ -61,18 +61,18 @@ def index():
       elif guess in values[1]:
         newSpaces = ["", "", "", "" , ""]
         for i in range(len(values[1])):
-          if values[1][i] == guess and values[3][i] != guess:
-              values[6] -= 1
-              newSpaces[i] = guess
-              loopList = [0, 1, 2 ,3, 4]
-              loopList.remove(i)
-              for n in loopList:
-                if len(values[3]) > 2 * n: 
-                  newSpaces[n] = values[3][2 * n]
-                else:
-                  newSpaces[n] = values[3][2 * n -1]
-              break
-        values[3] = str(newSpaces).replace("[", "").replace("]", "").replace(",", "").replace("'", "").strip()
+          if values[1][i] == guess and values[3][i*2] != guess:
+            values[6] -= 1
+            newSpaces[i] = guess
+            loopList = [0, 1, 2 ,3, 4]
+            loopList.remove(i)
+            for n in loopList:
+              if len(values[3]) > 2 * n: 
+                newSpaces[n] = values[3][2 * n]
+              else:
+                newSpaces[n] = values[3][2 * n -1]
+            values[3] = str(newSpaces).replace("[", "").replace("]", "").replace(",", "").replace("'", "").strip()
+            break
       values[0] = 2
     elif values[0] == 2:
       if guess not in alphabet:
@@ -80,18 +80,18 @@ def index():
       elif guess in values[2]:
         newSpaces = ["", "", "", "" , ""]
         for i in range(len(values[2])):
-          if values[2][i] == guess and values[4][i] != guess:
-              values[5] -= 1
-              newSpaces[i] = guess
-              loopList = [0, 1, 2 ,3, 4]
-              loopList.remove(i)
-              for n in loopList:
-                if len(values[4]) > 2 * n:
-                  newSpaces[n] = values[4][2 * n]
-                else:
-                  newSpaces[n] += values[4][2 * n - 1]
-              break
-        values[4] = str(newSpaces).replace("[", "").replace("]", "").replace(",", "").replace("'", "").strip()
+          if values[2][i] == guess and values[4][i*2] != guess:
+            values[5] -= 1
+            newSpaces[i] = guess
+            loopList = [0, 1, 2 ,3, 4]
+            loopList.remove(i)
+            for n in loopList:
+              if len(values[4]) > 2 * n:
+                newSpaces[n] = values[4][2 * n]
+              else:
+                newSpaces[n] += values[4][2 * n - 1]
+            values[4] = str(newSpaces).replace("[", "").replace("]", "").replace(",", "").replace("'", "").strip()
+            break
       values[0] = 1
 
     cursor.execute("UPDATE game SET turn = ?, spaces1 = ?, spaces2 = ?, health1 = ?, health2 = ?", (values[0], values[3], values[4], values[5], values[6]))
