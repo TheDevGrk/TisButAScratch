@@ -87,10 +87,25 @@ def index():
     cursor.execute("UPDATE game SET turn = ?, spaces1 = ?, spaces2 = ?, health1 = ?, health2 = ?", (values[0], values[3], values[4], values[5], values[6]))
     db.commit()
 
+    if values[5] < 0:
+      values[5] = 0
+    if values[6] < 0:
+      values[6] = 0
+
+    print(values[5], values[6])
+    if values[5] == 0:
+      values[7] = "Congratulations Player Two! Tis No Longer But A Scratch on Player One! You Won The Battle!"
+    elif values[6] == 0:
+      values[7] = "Congratulations Player One!  Tis No Longer But A Scratch on Player Two! You Won The Battle!"
+
     values[5] = f"whiteKnight{values[5]}.png"
     values[6] = f"blackKnight{values[6]}.png"
-    values[3] = values[3].replace("_", "_ ")
-    values[4] = values[4].replace("_", "_ ")
+
+    if values[0] == 1:
+      values[0] = "Player One's Turn"
+    elif values[0] == 2:
+      values[0] = "Player Two's Turn"
+
 
   cursor.close()
   db.close()
