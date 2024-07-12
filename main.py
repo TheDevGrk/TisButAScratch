@@ -6,7 +6,7 @@ r = RandomWord()
 app = Flask(__name__)
 
 
-@app.route('/', methods = ["GET", "POST"])
+@app.route('/game', methods = ["GET", "POST"])
 def index():
   alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
   
@@ -180,6 +180,10 @@ def index():
   db.close()
 
   return render_template("index.html", values = values)
+
+@app.route('/characters', methods = ["GET", "POST"])
+def characters():
+  return render_template("characters.html")
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=80)
