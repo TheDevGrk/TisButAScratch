@@ -59,10 +59,10 @@ def index():
       if guess not in alphabet:
         values[7] = "Player One Forfeited Their Turn!"
       elif guess in values[1]:
-        values[6] -= 1
         newSpaces = ["", "", "", "" , ""]
         for i in range(len(values[1])):
           if values[1][i] == guess and values[3][i] != guess:
+              values[6] -= 1
               newSpaces[i] = guess
               loopList = [0, 1, 2 ,3, 4]
               loopList.remove(i)
@@ -78,10 +78,10 @@ def index():
       if guess not in alphabet:
         values[7] = "Player Two Forfeited Their Turn!"
       elif guess in values[2]:
-        values[5] -= 1
         newSpaces = ["", "", "", "" , ""]
         for i in range(len(values[2])):
           if values[2][i] == guess and values[4][i] != guess:
+              values[5] -= 1
               newSpaces[i] = guess
               loopList = [0, 1, 2 ,3, 4]
               loopList.remove(i)
