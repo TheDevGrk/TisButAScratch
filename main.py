@@ -80,7 +80,7 @@ def index():
       elif guess in values[1]:
         newSpaces = ["", "", "", "" , ""]
 
-        for i in range(len(values[1])):
+        for i in range(5):
           if values[1][i] == guess and values[3][i*2] != guess:
 
             values[6] -= 1
@@ -107,7 +107,7 @@ def index():
       elif guess in values[2]:
         newSpaces = ["", "", "", "" , ""]
 
-        for i in range(len(values[2])):
+        for i in range(5):
           if values[2][i] == guess and values[4][i*2] != guess:
 
             values[5] -= 1
@@ -140,10 +140,33 @@ def index():
       values[8] = "Congratulations Player Two! Tis No Longer But A Scratch on Player One! You Won The Battle!"
       values[0] = "Enter \"Restart\" To Start A New Game"
       values[7] = "The Game Has Ended!!!"
+      
+      newSpaces = ""
+      for i in range(5):
+        if values[3].replace(" ", "")[i] == values[1][i]:
+          newSpaces = newSpaces + values[3].replace(" ", "")[i]
+          continue
+        else:
+          newSpaces = newSpaces + "<p style = 'color: red;'>" + values[3].replace(" ", "")[i] + "</p>"
+
+      values[3] = newSpaces
+      print(values[3])
     elif values[6] == 0:
       values[8] = "Congratulations Player One!  Tis No Longer But A Scratch on Player Two! You Won The Battle!"
       values[0] = "Enter \"Restart\" To Start A New Game"
       values[7] = "The Game Has Ended!!!"
+
+      newSpaces = ""
+      for i in range(5):
+        if values[4].replace(" ", "")[i] == values[2][i]:
+          newSpaces = newSpaces + values[4].replace(" ", "")[i]
+          continue
+        else:
+          newSpaces = newSpaces + "<p style = 'color: red;'>" + values[4].replace(" ", "")[i] + "</p>"
+
+      values[4] = newSpaces
+      print(values[4])
+
 
   values[5] = f"whiteKnight{values[5]}.png"
   values[6] = f"blackKnight{values[6]}.png"
