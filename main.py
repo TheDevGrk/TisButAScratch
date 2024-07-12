@@ -26,7 +26,7 @@ def index():
         word2 = r.word(word_min_length = 5, word_max_length = 5)
       cursor.execute("UPDATE game SET turn = ?, word1 = ?, word2 = ?, spaces1 = ?, spaces2 = ?, health1 = ?, health2 = ?", (1, word1, word2, "_ _ _ _ _", "_ _ _ _ _", 5, 5))
       db.commit()
-      values = ["Player One", "_ _ _ _ _", "_ _ _ _ _", "whiteKnight5.png", "blackKnight5.png"]
+      values = [1, word1, word2, "_ _ _ _ _", "_ _ _ _ _", 5, 5]
     else:
       word1 = r.word(word_min_length = 5, word_max_length = 5).upper()
       word2 = r.word(word_min_length = 5, word_max_length = 5).upper()
@@ -34,7 +34,7 @@ def index():
         word2 = r.word(word_min_length = 5, word_max_length = 5)
       cursor.execute("UPDATE game SET turn = ?, word1 = ?, word2 = ?, spaces1 = ?, spaces2 = ?, health1 = ?, health2 = ?", (1, word1, word2, "_ _ _ _ _", "_ _ _ _ _", 5, 5))
       db.commit()
-      values = ["Player One", word1, word2, "_ _ _ _ _", "_ _ _ _ _", "whiteKnight5.png", "blackKnight5.png"]
+      values = [1, word1, word2, "_ _ _ _ _", "_ _ _ _ _", 5, 5]
   elif request.method == "POST":
     values = []
     cursor.execute("SELECT * FROM game")
@@ -43,8 +43,19 @@ def index():
     for i in valuesUnformatted:
         values.append(i)
     values.append("")
-    if values[0] == 1:
-      guess = request.form['guess'].upper()
+
+    guess = request.form['guess'].upper()
+
+    if "RESTART" in guess.upper():
+      word1 = r.word(word_min_length = 5, word_max_length = 5).upper()
+      word2 = r.word(word_min_length = 5, word_max_length = 5).upper()
+      if word2 == word1:
+        word2 = r.word(word_min_length = 5, word_max_length = 5)
+      cursor.execute("UPDATE game SET turn = ?, word1 = ?, word2 = ?, spaces1 = ?, spaces2 = ?, health1 = ?, health2 = ?", (1, word1, word2, "_ _ _ _ _", "_ _ _ _ _", 5, 5))
+      db.commit()
+      values = [1, word1, word2, "_ _ _ _ _", "_ _ _ _ _", 5, 5]
+
+    elif values[0] == 1:
       if guess not in alphabet:
         values[7] = "Player One Forfeited Their Turn!"
       elif guess in values[1]:
@@ -64,7 +75,6 @@ def index():
         values[3] = str(newSpaces).replace("[", "").replace("]", "").replace(",", "").replace("'", "").strip()
       values[0] = 2
     elif values[0] == 2:
-      guess = request.form['guess'].upper()
       if guess not in alphabet:
         values[7] = "Player Two Forfeited Their Turn!"
       elif guess in values[2]:
@@ -92,19 +102,20 @@ def index():
     if values[6] < 0:
       values[6] = 0
 
-    print(values[5], values[6])
     if values[5] == 0:
       values[7] = "Congratulations Player Two! Tis No Longer But A Scratch on Player One! You Won The Battle!"
+      values[0] = "Enter \"Restart\" To Start A New Game"
     elif values[6] == 0:
       values[7] = "Congratulations Player One!  Tis No Longer But A Scratch on Player Two! You Won The Battle!"
+      values[0] = "Enter \"Restart\" To Start A New Game"
 
-    values[5] = f"whiteKnight{values[5]}.png"
-    values[6] = f"blackKnight{values[6]}.png"
+  values[5] = f"whiteKnight{values[5]}.png"
+  values[6] = f"blackKnight{values[6]}.png"
 
-    if values[0] == 1:
-      values[0] = "Player One's Turn"
-    elif values[0] == 2:
-      values[0] = "Player Two's Turn"
+  if values[0] == 1:
+    values[0] = "Player One's Turn"
+  elif values[0] == 2:
+    values[0] = "Player Two's Turn"
 
 
   cursor.close()
