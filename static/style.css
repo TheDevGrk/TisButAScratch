@@ -1,6 +1,9 @@
 *{
   font-family: Montserrat;
 }
+html{
+  background-color: antiquewhite;
+}
 header{
   text-align: center;
   font-size: 56px;
@@ -34,6 +37,7 @@ input[name = "guess"]{
   font-size: 23px;
   width: auto;
   height: 45px;
+  background: transparent;
 }
 #submit{
   margin: 20px;
@@ -69,4 +73,46 @@ input[name = "guess"]{
   color: navy;
   font-weight: 600;
   text-shadow: 1.5px 1.5px rgba(7, 4, 24, 0.282);
+}
+
+#characterContainer{
+  margin: 50px 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.characterSelect{
+  margin-bottom: 40px;
+  margin-top: 15px;
+  padding: 5px;
+  font-size: 24px;
+  transition: 0.35s;
+}
+.characterSelect:hover{
+  margin-bottom: 55px;
+  margin-top: 20px;
+  font-size: 36px;
+  padding: 10px;
+  border-radius: 24px;
+  font-weight: bold;
+}
+#black:hover{
+  background-color: black;
+  color: white;
+  border: 4px solid white;
+}
+#white:hover{
+  background-color: white;
+  color: black;
+  border: 4px solid black;
+}
+#blue:hover{
+  background-color: navy;
+  color: rgb(197, 64, 64);
+  border: 4px solid rgb(197, 64, 64);
+}
+#gray:hover{
+  background-color: rgb(183, 192, 194);
+  color: navy;
+  border: 4px solid navy;
 }

@@ -11,9 +11,18 @@
 
 <body>
   <header>Choose Your Character</header>
-  <img class = "player" src = "{{ url_for('static', filename = 'blackKnight5.png') }}"/>
-  <img class = "player" src = "{{ url_for('static', filename = 'whiteKnight5.png') }}"/>
-  <img class = "player" src = "{{ url_for('static', filename = 'blueKnight5.png') }}"/>
-  <img class = "player" src = "{{ url_for('static', filename = 'grayKnight5.png') }}"/>
+  <div id = "characterContainer">
+    <img class = "player" src = "{{ url_for('static', filename = 'blackKnight5.png') }}"/>
+    <input id = "black" type = "submit" class = "characterSelect" value = "Play As The Black Knight"/>
+
+    <img class = "player" src = "{{ url_for('static', filename = 'whiteKnight5.png') }}"/>
+    <input id = "white" type = "submit" class = "characterSelect" value = "Play As The White Knight"/>
+
+    <img class = "player" src = "{{ url_for('static', filename = 'blueKnight5.png') }}"/>
+    <input id = "blue" type = "submit" class = "characterSelect" value = "Play As The Blue Knight"/>
+
+    <img class = "player" src = "{{ url_for('static', filename = 'grayKnight5.png') }}"/>
+    <input id = "gray" type = "submit" class = "characterSelect" value = "Play As The Gray Knight"/>
+  </div>
 </body>
 </html>

@@ -5,7 +5,7 @@ r = RandomWord()
 
 app = Flask(__name__)
 
-
+# Used to ChatGPT to help brainstorm ideas for debugging the duplicate letter guessing system, did not copy and paste code
 @app.route('/game', methods = ["GET", "POST"])
 def index():
   alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
