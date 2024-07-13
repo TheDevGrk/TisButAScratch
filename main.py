@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 from wonderwords import RandomWord
+import random
 r = RandomWord()
 
 app = Flask(__name__)
@@ -12,6 +13,12 @@ def index():
   
   db = sqlite3.connect("main.sqlite")
   cursor = db.cursor()
+
+  cursor.execute("SELECT playerOneName FROM characters")
+  p1Name = cursor.fetchone()[0]
+
+  cursor.execute("SELECT playerTwoName FROM characters")
+  p2Name = cursor.fetchone()[0]
 
   if request.method == "GET":
     values = []
@@ -50,6 +57,8 @@ def index():
   elif request.method == "POST":
     values = []
 
+    responses = ["It's Just A Flesh Wound!", "I'm Invincible!", "Come On Then!", "Alright then, we'll just call it a draw.", "T'is But A Scratch"]
+
     cursor.execute("SELECT * FROM game")
     valuesUnformatted = cursor.fetchall()
 
@@ -60,17 +69,8 @@ def index():
 
     guess = request.form['guess'].upper()
 
-    if "RESTART" in guess.upper():
-      word1 = r.word(word_min_length = 5, word_max_length = 5).upper()
-      word2 = r.word(word_min_length = 5, word_max_length = 5).upper()
-
-      if word2 == word1:
-        word2 = r.word(word_min_length = 5, word_max_length = 5)
-
-      cursor.execute("UPDATE game SET turn = ?, word1 = ?, word2 = ?, spaces1 = ?, spaces2 = ?, health1 = ?, health2 = ?", (1, word1, word2, "_ _ _ _ _", "_ _ _ _ _", 5, 5))
-      db.commit()
-
-      values = [1, word1, word2, "_ _ _ _ _", "_ _ _ _ _", 5, 5]
+    if "RESTART" in guess:
+      return redirect(url_for('names'))
 
     elif values[0] == 1:
 
@@ -84,6 +84,7 @@ def index():
           if values[1][i] == guess and values[3][i*2] != guess:
 
             values[6] -= 1
+            values[7] = responses[random.randint(0, (len(responses) - 1))]
             newSpaces[i] = guess
 
             loopList = [0, 1, 2 ,3, 4]
@@ -111,6 +112,7 @@ def index():
           if values[2][i] == guess and values[4][i*2] != guess:
 
             values[5] -= 1
+            values[7] = responses[random.randint(0, (len(responses) - 1))]
             newSpaces[i] = guess
 
             loopList = [0, 1, 2 ,3, 4]
@@ -137,35 +139,15 @@ def index():
 
     values.append("")
     if values[5] == 0:
-      values[8] = "Congratulations Player Two! Tis No Longer But A Scratch on Player One! You Won The Battle!"
+      values[8] = f"Congratulations {p2Name}! Tis No Longer But A Scratch on {p1Name}! You Won The Battle! {p1Name}'s Word Was {values[1]}"
       values[0] = "Enter \"Restart\" To Start A New Game"
       values[7] = "The Game Has Ended!!!"
-      
-      newSpaces = ""
-      for i in range(5):
-        if values[3].replace(" ", "")[i] == values[1][i]:
-          newSpaces = newSpaces + values[3].replace(" ", "")[i]
-          continue
-        else:
-          newSpaces = newSpaces + "<p style = 'color: red;'>" + values[3].replace(" ", "")[i] + "</p>"
 
-      values[3] = newSpaces
-      print(values[3])
     elif values[6] == 0:
-      values[8] = "Congratulations Player One!  Tis No Longer But A Scratch on Player Two! You Won The Battle!"
+      values[8] = f"Congratulations {p1Name}! Tis No Longer But A Scratch on {p2Name}! You Won The Battle! {p2Name}'s Word Was {values[2]}"
       values[0] = "Enter \"Restart\" To Start A New Game"
       values[7] = "The Game Has Ended!!!"
 
-      newSpaces = ""
-      for i in range(5):
-        if values[4].replace(" ", "")[i] == values[2][i]:
-          newSpaces = newSpaces + values[4].replace(" ", "")[i]
-          continue
-        else:
-          newSpaces = newSpaces + "<p style = 'color: red;'>" + values[4].replace(" ", "")[i] + "</p>"
-
-      values[4] = newSpaces
-      print(values[4])
 
 
   cursor.execute("SELECT playerOne FROM characters")
@@ -178,18 +160,17 @@ def index():
   values[6] = f"{p2}{values[6]}.png"
 
   if values[0] == 1:
-    values[0] = "Player One's Turn"
+    values[0] = f"{p1Name}'s Turn"
   elif values[0] == 2:
-    values[0] = "Player Two's Turn"
+    values[0] = f"{p2Name}'s Turn"
 
   cursor.close()
   db.close()
 
   return render_template("index.html", values = values)
 
-@app.route('/', methods = ["GET", "POST"])
+@app.route('/characters', methods = ["GET", "POST"])
 def characters():
-  print(1)
   values = []
 
   db = sqlite3.connect("main.sqlite")
@@ -197,38 +178,30 @@ def characters():
 
   reroute = False
   if request.method == "GET":
-    print(2)
-    cursor.execute("CREATE TABLE IF NOT EXISTS characters(playerOne TEXT, playerTwo TEXT, selectionTurn INT)")
+    cursor.execute("CREATE TABLE IF NOT EXISTS characters(playerOne TEXT, playerTwo TEXT, selectionTurn INT, playerOneName TEXT, playerTwoName TEXT)")
     db.commit()
 
     cursor.execute("SELECT * FROM characters")
     test = cursor.fetchall()
 
     if test == []:
-      print(2.5)
-      cursor.execute("INSERT INTO characters(playerOne, playerTwo, selectionTurn) VALUES (?, ?, ?)", ("blackKnight", "whiteKnight", 1))
+      cursor.execute("INSERT INTO characters(playerOne, playerTwo, selectionTurn, playerOneName, playerTwoName) VALUES (?, ?, ?, ?, ?)", ("blackKnight", "whiteKnight", 1, "Player One", "Player Two"))
       db.commit()
     else:
-      print(3)
       cursor.execute("UPDATE characters SET playerOne = ?, playerTwo = ?, selectionTurn = ?", ("blackKnight", "whiteKnight", 1))
       db.commit()
 
   elif request.method == "POST":
-    print(4)
     cursor.execute("SELECT selectionTurn FROM characters")
     turn = cursor.fetchone()[0]
 
     if request.form["select"] == "Play As The Black Knight":
-      print(5)
       if turn == 1:
         cursor.execute("UPDATE characters SET playerOne = ?, selectionTurn = ?", ("blackKnight", 2))
-        print(6)
         db.commit()
       elif turn == 2:
         cursor.execute("UPDATE characters SET playerTwo = ?, selectionTurn = ?", ("blackKnight", 1))
-        print(7)
         db.commit()
-        print(8)
         reroute = True
       else:
         print("An error occurred when setting a player's character as blackKnight!")
@@ -266,21 +239,59 @@ def characters():
       else:
         print("An error occurred when setting a player's character as grayKnight!")
 
-  print(9)
   cursor.execute("SELECT selectionTurn FROM characters")
   turn = cursor.fetchone()[0]
 
-  print(10)
   if turn == 1:
-    values.append("Player One,")
-    print(11)
+    cursor.execute("SELECT playerOneName FROM characters")
+    p1Name = cursor.fetchone()[0]
+
+    values.append(f"{p1Name},")
+
   elif turn == 2:
-    values.append("Player Two,")
+    cursor.execute("SELECT playerTwoName FROM characters")
+    p2Name = cursor.fetchone()[0]
+
+    values.append(f"{p2Name},")
+
   if reroute:
     return redirect(url_for('index'))
   else:
-    print(12)
     return render_template("characters.html", values = values)
+
+@app.route('/', methods = ["GET", "POST"])
+def names():
+  db = sqlite3.connect("main.sqlite")
+  cursor = db.cursor()
+
+  reroute = False
+  if request.method == "GET":
+    cursor.execute("CREATE TABLE IF NOT EXISTS characters(playerOne TEXT, playerTwo TEXT, selectionTurn INT, playerOneName TEXT, playerTwoName TEXT)")
+    db.commit()
+
+    cursor.execute("SELECT * FROM characters")
+    test = cursor.fetchall()
+
+    if test == []:
+      cursor.execute("INSERT INTO characters(playerOne, playerTwo, selectionTurn, playerOneName, playerTwoName) VALUES (?, ?, ?, ?, ?)", ("blackKnight", "whiteKnight", 1, "Player One", "Player Two"))
+      db.commit()
+    else:
+      cursor.execute("UPDATE characters SET playerOne = ?, playerTwo = ?, selectionTurn = ?, playerOneName = ?, playerTwoName = ?", ("blackKnight", "whiteKnight", 1, "Player One", "Player Two"))
+      db.commit()
+
+  elif request.method == "POST":
+    p1Name = request.form["p1"]
+    p2Name = request.form["p2"]
+
+    cursor.execute("UPDATE characters SET playerOneName = ?, playerTwoName = ?", (p1Name, p2Name))
+    db.commit()
+
+    reroute = True
+
+  if reroute:
+    return redirect(url_for('characters'))
+  else:
+    return render_template("names.html")
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=80)

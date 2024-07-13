@@ -57,7 +57,7 @@ input[name = "guess"]{
   margin: 20px 150px;
   text-align: center;
   font-size: 36px;
-  color: gold;
+  color: rgb(193, 23, 148);
 }
 #howHeader{
   text-align: center;
@@ -115,4 +115,14 @@ input[name = "guess"]{
   background-color: rgb(183, 192, 194);
   color: navy;
   border: 4px solid navy;
+}
+
+#nameContainer{
+  margin: 50px 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#p1Name{
+  margin-bottom: 15px;
 }
