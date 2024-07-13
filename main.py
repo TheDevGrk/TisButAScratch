@@ -205,40 +205,40 @@ def characters():
 
     if request.form["select"] == "Play As The Black Knight":
       if turn == 1:
-        cursor.execute("UPDATE characters SET playerOne = ?", ("blackKnight",))
+        cursor.execute("UPDATE characters SET playerOne = ?, selectionTurn = ?", ("blackKnight", 2))
         db.commit()
       elif turn == 2:
-        cursor.execute("UPDATE characters SET playerTwo = ?", ("blackKnight",))
+        cursor.execute("UPDATE characters SET playerTwo = ?, selectionTurn = ?", ("blackKnight", 1))
         db.commit()
       else:
         print("An error occurred when setting a player's character as blackKnight!")
 
     elif request.form["select"] == "Play As The White Knight":
       if turn == 1:
-        cursor.execute("UPDATE characters SET playerOne = ?", ("whiteKnight",))
+        cursor.execute("UPDATE characters SET playerOne = ?, selectionTurn = ?", ("whiteKnight", 2))
         db.commit()
       elif turn == 2:
-        cursor.execute("UPDATE characters SET playerTwo = ?", ("whiteKnight",))
+        cursor.execute("UPDATE characters SET playerTwo = ?, selectionTurn = ?", ("whiteKnight", 1))
         db.commit()
       else:
         print("An error occurred when setting a player's character as whiteKnight!")
 
     elif request.form["select"] == "Play As The Blue Knight":
       if turn == 1:
-        cursor.execute("UPDATE characters SET playerOne = ?", ("blueKnight",))
+        cursor.execute("UPDATE characters SET playerOne = ?, selectionTurn = ?", ("blueKnight", 2))
         db.commit()
       elif turn == 2:
-        cursor.execute("UPDATE characters SET playerTwo = ?", ("blueKnight",))
+        cursor.execute("UPDATE characters SET playerTwo = ?, selectionTurn = ?", ("blueKnight",1))
         db.commit()
       else:
         print("An error occurred when setting a player's character as blueKnight!")
 
     elif request.form["select"] == "Play As The Gray Knight":
       if turn == 1:
-        cursor.execute("UPDATE characters SET playerOne = ?", ("grayKnight",))
+        cursor.execute("UPDATE characters SET playerOne = ?, selectionTurn = ?", ("grayKnight", 2))
         db.commit()
       elif turn == 2:
-        cursor.execute("UPDATE characters SET playerTwo = ?", ("grayKnight",))
+        cursor.execute("UPDATE characters SET playerTwo = ?, selectionTurn = ?", ("grayKnight", 1))
         db.commit()
       else:
         print("An error occurred when setting a player's character as grayKnight!")
