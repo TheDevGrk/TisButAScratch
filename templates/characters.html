@@ -12,17 +12,19 @@
 <body>
   <header>Choose Your Character</header>
   <div id = "characterContainer">
+    <form method = "POST">
     <img class = "player" src = "{{ url_for('static', filename = 'blackKnight5.png') }}"/>
-    <input id = "black" type = "submit" class = "characterSelect" value = "Play As The Black Knight"/>
+    <input id = "black" type = "submit" name = "select" class = "characterSelect" value = "Play As The Black Knight"/>
 
     <img class = "player" src = "{{ url_for('static', filename = 'whiteKnight5.png') }}"/>
-    <input id = "white" type = "submit" class = "characterSelect" value = "Play As The White Knight"/>
+    <input id = "white" type = "submit" name = "select" class = "characterSelect" value = "Play As The White Knight"/>
 
     <img class = "player" src = "{{ url_for('static', filename = 'blueKnight5.png') }}"/>
-    <input id = "blue" type = "submit" class = "characterSelect" value = "Play As The Blue Knight"/>
+    <input id = "blue" type = "submit" name = "select" class = "characterSelect" value = "Play As The Blue Knight"/>
 
     <img class = "player" src = "{{ url_for('static', filename = 'grayKnight5.png') }}"/>
-    <input id = "gray" type = "submit" class = "characterSelect" value = "Play As The Gray Knight"/>
+    <input id = "gray" type = "submit" name = "select" class = "characterSelect" value = "Play As The Gray Knight"/>
+    </form>
   </div>
 </body>
 </html>

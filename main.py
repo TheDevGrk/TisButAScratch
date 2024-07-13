@@ -183,6 +183,58 @@ def index():
 
 @app.route('/characters', methods = ["GET", "POST"])
 def characters():
+  db = sqlite3.connect("main.sqlite")
+  cursor = db.cursor()
+  if request.method == "GET":
+    cursor.execute("CREATE TABLE IF NOT EXISTS characters(playerOne TEXT, playerTwo TEXT, selectionTurn INT)")
+    db.commit()
+
+    cursor.execute("SELECT * FROM characters")
+    test = cursor.fetchall()
+
+    if test == []:
+      cursor.execute("INSERT INTO characters(playerOne, playerTwo, selectionTurn) VALUES (?, ?, ?)", ("blackKnight", "whiteKnight", 1))
+      db.commit()
+    else:
+      cursor.execute("UPDATE characters SET playerOne = ?, playerTwo = ?, selectionTurn = ?", ("blackKnight", "whiteKnight", 1))
+      db.commit()
+
+  elif request.method == "POST":
+    cursor.execute("SELECT selectionTurn FROM characters")
+    turn = cursor.fetchone()[0]
+
+    if request.form["select"] == "Play As The Black Knight":
+      if turn == 1:
+        cursor.execute("UPDATE characters SET playerOne = ?", ("blackKnight",))
+      elif turn == 2:
+        cursor.execute("UPDATE characters SET playerTwo = ?", ("blackKnight",))
+      else:
+        print("An error occurred when setting a player's character as blackKnight!")
+
+    elif request.form["select"] == "Play As The White Knight":
+      if turn == 1:
+        cursor.execute("UPDATE characters SET playerOne = ?", ("whiteKnight",))
+      elif turn == 2:
+        cursor.execute("UPDATE characters SET playerTwo = ?", ("whiteKnight",))
+      else:
+        print("An error occurred when setting a player's character as whiteKnight!")
+
+    elif request.form["select"] == "Play As The Blue Knight":
+      if turn == 1:
+        cursor.execute("UPDATE characters SET playerOne = ?", ("blueKnight",))
+      elif turn == 2:
+        cursor.execute("UPDATE characters SET playerTwo = ?", ("blueKnight",))
+      else:
+        print("An error occurred when setting a player's character as blueKnight!")
+
+    elif request.form["select"] == "Play As The Gray Knight":
+      if turn == 1:
+        cursor.execute("UPDATE characters SET playerOne = ?", ("grayKnight",))
+      elif turn == 2:
+        cursor.execute("UPDATE characters SET playerTwo = ?", ("grayKnight",))
+      else:
+        print("An error occurred when setting a player's character as grayKnight!")
+
   return render_template("characters.html")
 
 if __name__ == '__main__':
