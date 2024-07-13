@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 from wonderwords import RandomWord
 r = RandomWord()
@@ -168,8 +168,14 @@ def index():
       print(values[4])
 
 
-  values[5] = f"whiteKnight{values[5]}.png"
-  values[6] = f"blackKnight{values[6]}.png"
+  cursor.execute("SELECT playerOne FROM characters")
+  p1 = cursor.fetchone()[0]
+
+  cursor.execute("SELECT playerTwo FROM characters")
+  p2 = cursor.fetchone()[0]
+
+  values[5] = f"{p1}{values[5]}.png"
+  values[6] = f"{p2}{values[6]}.png"
 
   if values[0] == 1:
     values[0] = "Player One's Turn"
@@ -181,11 +187,17 @@ def index():
 
   return render_template("index.html", values = values)
 
-@app.route('/characters', methods = ["GET", "POST"])
+@app.route('/', methods = ["GET", "POST"])
 def characters():
+  print(1)
+  values = []
+
   db = sqlite3.connect("main.sqlite")
   cursor = db.cursor()
+
+  reroute = False
   if request.method == "GET":
+    print(2)
     cursor.execute("CREATE TABLE IF NOT EXISTS characters(playerOne TEXT, playerTwo TEXT, selectionTurn INT)")
     db.commit()
 
@@ -193,23 +205,31 @@ def characters():
     test = cursor.fetchall()
 
     if test == []:
+      print(2.5)
       cursor.execute("INSERT INTO characters(playerOne, playerTwo, selectionTurn) VALUES (?, ?, ?)", ("blackKnight", "whiteKnight", 1))
       db.commit()
     else:
+      print(3)
       cursor.execute("UPDATE characters SET playerOne = ?, playerTwo = ?, selectionTurn = ?", ("blackKnight", "whiteKnight", 1))
       db.commit()
 
   elif request.method == "POST":
+    print(4)
     cursor.execute("SELECT selectionTurn FROM characters")
     turn = cursor.fetchone()[0]
 
     if request.form["select"] == "Play As The Black Knight":
+      print(5)
       if turn == 1:
         cursor.execute("UPDATE characters SET playerOne = ?, selectionTurn = ?", ("blackKnight", 2))
+        print(6)
         db.commit()
       elif turn == 2:
         cursor.execute("UPDATE characters SET playerTwo = ?, selectionTurn = ?", ("blackKnight", 1))
+        print(7)
         db.commit()
+        print(8)
+        reroute = True
       else:
         print("An error occurred when setting a player's character as blackKnight!")
 
@@ -220,6 +240,7 @@ def characters():
       elif turn == 2:
         cursor.execute("UPDATE characters SET playerTwo = ?, selectionTurn = ?", ("whiteKnight", 1))
         db.commit()
+        reroute = True
       else:
         print("An error occurred when setting a player's character as whiteKnight!")
 
@@ -230,6 +251,7 @@ def characters():
       elif turn == 2:
         cursor.execute("UPDATE characters SET playerTwo = ?, selectionTurn = ?", ("blueKnight",1))
         db.commit()
+        reroute = True
       else:
         print("An error occurred when setting a player's character as blueKnight!")
 
@@ -240,10 +262,25 @@ def characters():
       elif turn == 2:
         cursor.execute("UPDATE characters SET playerTwo = ?, selectionTurn = ?", ("grayKnight", 1))
         db.commit()
+        reroute = True
       else:
         print("An error occurred when setting a player's character as grayKnight!")
 
-  return render_template("characters.html")
+  print(9)
+  cursor.execute("SELECT selectionTurn FROM characters")
+  turn = cursor.fetchone()[0]
+
+  print(10)
+  if turn == 1:
+    values.append("Player One,")
+    print(11)
+  elif turn == 2:
+    values.append("Player Two,")
+  if reroute:
+    return redirect(url_for('index'))
+  else:
+    print(12)
+    return render_template("characters.html", values = values)
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=80)

@@ -10,8 +10,8 @@
 </head>
 
 <body>
-  <header>Choose Your Character</header>
-  <form method = "POST"></form>
+  <header>{{ values[0] }} Choose Your Character</header>
+  <form method = "POST">
     <div id = "characterContainer">
         <img class = "player" src = "{{ url_for('static', filename = 'blackKnight5.png') }}"/>
         <input id = "black" type = "submit" class = "characterSelect" name = "select" value = "Play As The Black Knight"/>
