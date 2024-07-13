@@ -206,32 +206,40 @@ def characters():
     if request.form["select"] == "Play As The Black Knight":
       if turn == 1:
         cursor.execute("UPDATE characters SET playerOne = ?", ("blackKnight",))
+        db.commit()
       elif turn == 2:
         cursor.execute("UPDATE characters SET playerTwo = ?", ("blackKnight",))
+        db.commit()
       else:
         print("An error occurred when setting a player's character as blackKnight!")
 
     elif request.form["select"] == "Play As The White Knight":
       if turn == 1:
         cursor.execute("UPDATE characters SET playerOne = ?", ("whiteKnight",))
+        db.commit()
       elif turn == 2:
         cursor.execute("UPDATE characters SET playerTwo = ?", ("whiteKnight",))
+        db.commit()
       else:
         print("An error occurred when setting a player's character as whiteKnight!")
 
     elif request.form["select"] == "Play As The Blue Knight":
       if turn == 1:
         cursor.execute("UPDATE characters SET playerOne = ?", ("blueKnight",))
+        db.commit()
       elif turn == 2:
         cursor.execute("UPDATE characters SET playerTwo = ?", ("blueKnight",))
+        db.commit()
       else:
         print("An error occurred when setting a player's character as blueKnight!")
 
     elif request.form["select"] == "Play As The Gray Knight":
       if turn == 1:
         cursor.execute("UPDATE characters SET playerOne = ?", ("grayKnight",))
+        db.commit()
       elif turn == 2:
         cursor.execute("UPDATE characters SET playerTwo = ?", ("grayKnight",))
+        db.commit()
       else:
         print("An error occurred when setting a player's character as grayKnight!")
 
